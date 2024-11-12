@@ -24,6 +24,9 @@ class UserActivityMonitor {
         this.sessionId = this._generateUUID();
         this.userInfo = null;
 
+        // 添加新属性
+        this.pauseReason = null;
+
         // 初始化
         this._init();
     }
@@ -229,6 +232,11 @@ class UserActivityMonitor {
 
     _handleVisibilityChange() {
         this.isWindowFocused = !document.hidden;
+        if (document.hidden) {
+            this._setPauseReason('Page is hidden');
+        } else {
+            this._setPauseReason(null);
+        }
     }
 
     _handleWindowFocus() {
@@ -237,6 +245,7 @@ class UserActivityMonitor {
 
     _handleWindowBlur() {
         this.isWindowFocused = false;
+        this._setPauseReason('Window lost focus');
     }
 
     _startActivityCheck() {
@@ -244,13 +253,15 @@ class UserActivityMonitor {
             const now = Date.now();
             const timeSinceLastInteraction = now - this.lastInteractionTime;
             
-            // 使用配置的阈值检查是否超过无操作时
             if (timeSinceLastInteraction > this.options.noActivityThreshold) {
                 this.hasRecentInteraction = false;
+                this._setPauseReason('No user activity detected');
+            } else {
+                this._setPauseReason(null);
             }
             
             this._updateActiveTime();
-        }, 1000); // 每秒检查一次
+        }, 1000);
     }
 
     _updateActiveTime() {
@@ -331,13 +342,45 @@ class UserActivityMonitor {
         }
     }
 
-    // 提供公共方法获取用户信息
+    // 添加新方法获取当前状态
+    _getActivityStatus() {
+        if (!this.isWindowFocused) {
+            return {
+                isActive: false,
+                reason: 'Window is not focused - User switched to another window/tab'
+            };
+        }
+        
+        if (document.hidden) {
+            return {
+                isActive: false,
+                reason: 'Page is hidden - Browser tab is not visible'
+            };
+        }
+        
+        const timeSinceLastInteraction = Date.now() - this.lastInteractionTime;
+        if (timeSinceLastInteraction > this.options.noActivityThreshold) {
+            return {
+                isActive: false,
+                reason: `No user activity detected`
+            };
+        }
+        
+        return {
+            isActive: true,
+            reason: null
+        };
+    }
+
+    // 修改获取用户信息的方法
     getUserInfo() {
+        const status = this._getActivityStatus();
         return {
             ...this.userInfo,
             activeTime: this.activeTime,
-            isActive: this.isActive,
-            isWindowFocused: this.isWindowFocused
+            isActive: status.isActive,
+            isWindowFocused: this.isWindowFocused,
+            pauseReason: status.reason
         };
     }
 
@@ -358,6 +401,11 @@ class UserActivityMonitor {
             const v = c === 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
+    }
+
+    // 添加新方法来设置暂停原因
+    _setPauseReason(reason) {
+        this.pauseReason = reason;
     }
 }
 

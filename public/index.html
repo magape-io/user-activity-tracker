@@ -1,34 +1,165 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户行为监控测试</title>
+    <title>User Activity Monitor Test</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #818cf8;
+            --bg-color: #f9fafb;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px var(--shadow-color),
+                        0 2px 4px -2px var(--shadow-color);
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #output {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        #output:hover {
+            box-shadow: 0 8px 16px var(--shadow-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        p {
+            margin: 1rem 0;
+            font-size: 1.1em;
+            color: var(--text-color);
+        }
+
+        pre {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        .active-time {
+            font-weight: 600;
+            color: #10b981;
+            padding: 0.25rem 0.75rem;
+            background: #ecfdf5;
+            border-radius: 9999px;
+            display: inline-block;
+        }
+
+        .status-message {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-weight: 500;
+        }
+        
+        .status-reason {
+            font-size: 0.9em;
+            margin-top: 0.25rem;
+            opacity: 0.9;
+        }
+        
+        .status-active {
+            background-color: #ecfdf5;
+            color: #10b981;
+        }
+        
+        .status-inactive {
+            background-color: #fef2f2;
+            color: #ef4444;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>用户行为监控测试页面</h1>
-    <div id="output"></div>
-    
+    <div class="container">
+        <h1>User Activity Monitor Test Page</h1>
+        <div id="output"></div>
+    </div>
+
     <script src="/index.js"></script>
     <script>
-        // 初始化监控
         const activityMonitor = new UserActivityMonitor({
-            inactiveThreshold: 30000,    // 30秒无操作视为不活跃
-            noActivityThreshold: 10000,  // 10秒无鼠标键盘操作停止计时
-            sendInterval: 10000,         // 每分钟同步一次数据
-            endpoint: 'http://localhost:8787/api/activities', // 修改为与 D1 数据库 API 匹配的端点
-            gameId: 'game_001',         // 添加游戏 ID
-            gameName: '超级马里奥'      // 添加游戏名称
+            inactiveThreshold: 30000,
+            noActivityThreshold: 10000,
+            sendInterval: 10000,
+            endpoint: 'http://localhost:8787/api/activities',
+            gameId: 'game_001',
+            gameName: 'Super Mario'
         });
 
-        // 定期显示监控数据
         setInterval(() => {
             const userInfo = activityMonitor.getUserInfo();
             const activeTime = activityMonitor.getActiveTime();
             
             document.getElementById('output').innerHTML = `
-                <h2>监控数据：</h2>
-                <p>活跃时间：${activeTime} 秒</p>
+                <h2>Monitoring Data</h2>
+                <p>Active Time: <span class="active-time">${activeTime} seconds</span></p>
+                <p style="color: ${userInfo.isActive ? '#10b981' : '#ef4444'}">
+                    Status: ${userInfo.isActive ? 'Active' : 'Inactive'}
+                    ${userInfo.pauseReason ? `<br><span style="font-size: 0.9em; opacity: 0.9">Reason: ${userInfo.pauseReason}</span>` : ''}
+                </p>
                 <pre>${JSON.stringify(userInfo, null, 2)}</pre>
             `;
         }, 1000);
