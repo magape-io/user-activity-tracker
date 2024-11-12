@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户行为监控测试</title>
+</head>
+<body>
+    <h1>用户行为监控测试页面</h1>
+    <div id="output"></div>
+    
+    <script src="/index.js"></script>
+    <script>
+        // 初始化监控
+        const activityMonitor = new UserActivityMonitor({
+            inactiveThreshold: 0.5 * 60 * 1000,    // 30秒无操作视为不活跃
+            noActivityThreshold: 30 * 1000,            // 10秒无鼠标键盘操作停止计时
+            sendInterval: 60000,                   // 每分钟同步一次数据
+            endpoint: '/api/activity-log',
+        });
+
+        // 定期显示监控数据
+        setInterval(() => {
+            const userInfo = activityMonitor.getUserInfo();
+            const activeTime = activityMonitor.getActiveTime();
+            
+            document.getElementById('output').innerHTML = `
+                <h2>监控数据：</h2>
+                <p>活跃时间：${activeTime} 秒</p>
+                <pre>${JSON.stringify(userInfo, null, 2)}</pre>
+            `;
+        }, 1000);
+    </script>
+</body>
+</html>
