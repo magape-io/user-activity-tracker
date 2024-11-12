@@ -7,7 +7,9 @@ class UserActivityMonitor {
             sendInterval: options.sendInterval || 30000, // 数据发送间隔，默认30秒
             endpoint: options.endpoint || '/api/activity-log',
             ipEndpoint: options.ipEndpoint || 'https://api.ipify.org?format=json', // IP获取接口
-            noActivityThreshold: options.noActivityThreshold || 10000 // 默认10秒无操作视为不活跃
+            noActivityThreshold: options.noActivityThreshold || 10000, // 默认10秒无操作视为不活跃
+            gameId: options.gameId || null,        // 新增：游戏ID
+            gameName: options.gameName || null,    // 新增：游戏名称
         };
 
         // 状态变量
@@ -38,6 +40,9 @@ class UserActivityMonitor {
 
         // 定期保存数据
         this._startDataSync();
+
+        // 新增：初始化完成后立即发送一次数据
+        this._saveData();
     }
 
     async _getUserInfo() {
@@ -239,7 +244,7 @@ class UserActivityMonitor {
             const now = Date.now();
             const timeSinceLastInteraction = now - this.lastInteractionTime;
             
-            // 使用配置的阈值检查是否超过无操作时间
+            // 使用配置的阈值检查是否超过无操作时
             if (timeSinceLastInteraction > this.options.noActivityThreshold) {
                 this.hasRecentInteraction = false;
             }
@@ -261,14 +266,45 @@ class UserActivityMonitor {
     _saveData() {
         this._updateActiveTime();
         
+        // 重构数据格式以匹配数据库结构
         const activityData = {
-            ...this.userInfo,
-            sessionId: this.sessionId,
-            loginTime: this.loginTime,
-            activeTime: this.activeTime,
-            isWindowFocused: this.isWindowFocused,
-            hasRecentInteraction: this.hasRecentInteraction,
-            timestamp: Date.now()
+            session_id: this.sessionId,
+            game_id: this.options.gameId || 'unknown',
+            game_name: this.options.gameName || 'unknown',
+            user_ip: this.userInfo.ip,
+            login_time: this.loginTime,
+            active_time: this.activeTime,
+            is_window_focused: this.isWindowFocused,
+            has_recent_interaction: this.hasRecentInteraction,
+            
+            // 设备信息
+            os: this.userInfo.os,
+            os_version: this.userInfo.osVersion,
+            browser: this.userInfo.browser,
+            browser_version: this.userInfo.browserVersion,
+            device_type: this.userInfo.deviceType,
+            device_model: this.userInfo.deviceModel,
+            
+            // 屏幕信息
+            screen_width: this.userInfo.screen.width,
+            screen_height: this.userInfo.screen.height,
+            color_depth: this.userInfo.screen.colorDepth,
+            pixel_ratio: this.userInfo.screen.pixelRatio,
+            
+            // 视口信息
+            viewport_width: this.userInfo.viewport.width,
+            viewport_height: this.userInfo.viewport.height,
+            
+            // 硬件信息
+            hardware_cores: this.userInfo.hardware.cores,
+            hardware_memory: this.userInfo.hardware.memory,
+            hardware_platform: this.userInfo.hardware.platform,
+            
+            // 其他信息
+            language: this.userInfo.language,
+            timezone: this.userInfo.timezone,
+            
+            timestamp: new Date().toISOString()
         };
 
         // 发送到服务器

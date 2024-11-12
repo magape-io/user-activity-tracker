@@ -13,10 +13,12 @@
     <script>
         // 初始化监控
         const activityMonitor = new UserActivityMonitor({
-            inactiveThreshold: 0.5 * 60 * 1000,    // 30秒无操作视为不活跃
-            noActivityThreshold: 30 * 1000,            // 10秒无鼠标键盘操作停止计时
-            sendInterval: 60000,                   // 每分钟同步一次数据
-            endpoint: '/api/activity-log',
+            inactiveThreshold: 30000,    // 30秒无操作视为不活跃
+            noActivityThreshold: 10000,  // 10秒无鼠标键盘操作停止计时
+            sendInterval: 10000,         // 每分钟同步一次数据
+            endpoint: 'http://localhost:8787/api/activities', // 修改为与 D1 数据库 API 匹配的端点
+            gameId: 'game_001',         // 添加游戏 ID
+            gameName: '超级马里奥'      // 添加游戏名称
         });
 
         // 定期显示监控数据
