@@ -1,12 +1,72 @@
+# user-activity-tracker
+
+A lightweight user activity tracking tool for monitoring real-time user activity status on web pages.
+
+## Features
+
+- 🔄 Real-time user activity tracking
+- 🕒 Precise active time recording
+- 📊 Automatic device and IP information collection
+- 🔍 Smart user inactivity detection
+  - Page focus/blur detection
+  - No-activity detection
+- 📝 Automatic session ID generation (UUID)
+- ⏱️ Configurable activity detection thresholds
+- 📡 Real-time data reporting
+
+## Installation
+
+```bash
+bun install
+# or
+npm install
+```
+
 ## Rules
-When a user visits a page, a UUID is generated. This ID will start recording the usage time of this visit, along with hardware information from this IP address and login time details. The timing will begin immediately.
+When a user visits a page, a UUID is generated. This ID will start recording the usage time of this visit, along with hardware information 
+from this IP address and login time details. The timing will begin immediately.
 How to determine user inactivity
 
-### Page loses focus
-No mouse clicks or keyboard inputs within a certain time period
+## Quick Start
 
-## 规则
-用户每次访问页面，会生成一个uuid, 这个id会开始记录这次访问的使用时间，以及这个ip的一些硬件信息，以及登录时间等。并开始计时。
-### 如何算作用户不在操作状态
-- 页面失焦
-- 一定时间内用户没有鼠标点击和键盘点击
+1. Start the development server:
+```bash
+bun run dev
+```
+
+2. Include in your HTML:
+```html
+<script src="/index.js"></script>
+<script>
+    const activityMonitor = new UserActivityMonitor({
+        inactiveThreshold: 30000,    // 30 seconds for inactivity
+        noActivityThreshold: 10000,  // 10 seconds for no mouse/keyboard activity
+        sendInterval: 60000,         // Sync data every minute
+        endpoint: '/api/activity-log',
+    });
+</script>
+```
+
+## Configuration Options
+
+| Parameter | Description | Default Value |
+|-----------|-------------|---------------|
+| inactiveThreshold | Time threshold for user inactivity | 60000ms |
+| noActivityThreshold | Time threshold for no activity detection | 10000ms |
+| sendInterval | Data reporting interval | 30000ms |
+| endpoint | Data reporting API endpoint | '/api/activity-log' |
+| storageKey | Local storage key | 'user_activity_data' |
+
+## Collected Data
+
+- Session ID (UUID)
+- Login time
+- Active time statistics
+- Device information
+- IP address
+- Page focus status
+- User interaction status
+
+## Use Cases
+
+- User behavior analysis
