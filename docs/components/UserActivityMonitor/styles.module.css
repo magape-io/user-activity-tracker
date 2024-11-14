@@ -1,0 +1,103 @@
+.container {
+  padding: 1rem;
+}
+
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.25rem;
+  color: #1f2937;
+}
+
+.cardGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.infoCard {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+}
+
+.activeTimeCard {
+  grid-column: 1;
+}
+
+.statusCard {
+  grid-column: 2;
+}
+
+.detailsCard {
+  grid-column: 1 / -1;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.activeTime {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+.statusActive {
+  color: #059669;
+  font-weight: 600;
+}
+
+.statusInactive {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.pauseReason {
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.preBlock {
+  background: white;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .activeTimeCard,
+  .statusCard {
+    grid-column: 1;
+  }
+  
+  .infoCard {
+    padding: 0.75rem;
+  }
+}

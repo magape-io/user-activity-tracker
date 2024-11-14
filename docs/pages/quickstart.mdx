@@ -1,0 +1,15 @@
+# Quick Start
+
+
+1. Include in your HTML:
+```html
+<script src="/index.js"></script>
+<script>
+    const activityMonitor = new UserActivityMonitor({
+        inactiveThreshold: 30000,    // 30 seconds for inactivity
+        noActivityThreshold: 10000,  // 10 seconds for no mouse/keyboard activity
+        sendInterval: 60000,         // Sync data every minute
+        endpoint: '/api/activity-log',
+    });
+</script>
+```

@@ -1,0 +1,10 @@
+import UserActivityMonitor from '../components/UserActivityMonitor'
+
+<UserActivityMonitor 
+    gameId="game_001"
+    gameName="超级马里奥"
+    inactiveThreshold={30000}  
+    noActivityThreshold={10000}
+    sendInterval={10000}  
+    endpoint="http://your-api-endpoint/activities"
+/>
