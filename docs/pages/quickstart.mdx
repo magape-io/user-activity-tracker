@@ -1,15 +1,47 @@
 # Quick Start
 
+## CDN Installation
 
-1. Include in your HTML:
+You can include the script using any of these CDN links:
+
 ```html
-<script src="/index.js"></script>
+<!-- jsDelivr CDN -->
+<script src="https://cdn.jsdelivr.net/gh/magape-io/user-activity-tracker@main/demo/user-activity-monitor.js"></script>
+
+```
+
+## Basic Usage
+
+Add the following code to your HTML file:
+
+```html
+<!-- Include user activity tracking script -->
+<script src="https://cdn.jsdelivr.net/gh/magape-io/user-activity-tracker@main/demo/user-activity-monitor.js"></script>
+
+<!-- Initialize configuration -->
 <script>
     const activityMonitor = new UserActivityMonitor({
-        inactiveThreshold: 30000,    // 30 seconds for inactivity
-        noActivityThreshold: 10000,  // 10 seconds for no mouse/keyboard activity
-        sendInterval: 60000,         // Sync data every minute
+        // Mark user as inactive after 30 seconds of no interaction
+        inactiveThreshold: 30000,    
+        
+        // Trigger after 10 seconds of no mouse/keyboard activity
+        noActivityThreshold: 10000,  
+        
+        // Sync data every minute
+        sendInterval: 60000,         
+        
+        // Data reporting endpoint
         endpoint: '/api/activity-log',
     });
 </script>
 ```
+
+## Configuration Options
+
+| Parameter | Description | Default Value |
+|-----------|-------------|---------------|
+| inactiveThreshold | Time threshold for user inactivity | 60000ms |
+| noActivityThreshold | Time threshold for no activity detection | 10000ms |
+| sendInterval | Data reporting interval | 30000ms |
+| endpoint | Data reporting API endpoint | '/api/activity-log' |
+| storageKey | Local storage key | 'user_activity_data' |

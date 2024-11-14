@@ -20,16 +20,6 @@ When a user visits a page, a UUID is generated. This ID will start recording the
 from this IP address and login time details. The timing will begin immediately.
 How to determine user inactivity
 
-## Configuration Options
-
-| Parameter | Description | Default Value |
-|-----------|-------------|---------------|
-| inactiveThreshold | Time threshold for user inactivity | 60000ms |
-| noActivityThreshold | Time threshold for no activity detection | 10000ms |
-| sendInterval | Data reporting interval | 30000ms |
-| endpoint | Data reporting API endpoint | '/api/activity-log' |
-| storageKey | Local storage key | 'user_activity_data' |
-
 ## Collected Data
 
 - Session ID (UUID)
