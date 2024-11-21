@@ -40,10 +40,10 @@ importers:
 
   packages/docs:
     specifiers:
+      '@magape-track/core': workspace:*
       '@types/node': ^18.11.10
       '@types/react': ^18.2.0
       '@types/react-dom': ^18.2.0
-      '@user-tracker/core': workspace:*
       next: ^13.5.7
       nextra: ^3.0.0
       nextra-theme-docs: ^3.0.0
@@ -51,7 +51,7 @@ importers:
       react-dom: ^18.2.0
       typescript: ^4.9.3
     dependencies:
-      '@user-tracker/core': link:../core
+      '@magape-track/core': link:../core
       next: 13.5.7_nnrd3gsncyragczmpvfhocinkq
       nextra: 3.2.4_3zs3wbjxp7ocjmeotgcp6t5ujm
       nextra-theme-docs: 3.2.4_bdmk7oraasqlkqgbedgum6hx7y

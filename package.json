@@ -1,9 +1,9 @@
 {
-  "name": "user-activity-tracker",
+  "name": "@magape-track/monorepo",
   "private": true,
   "scripts": {
     "dev": "pnpm --parallel run dev",
-    "build": "pnpm --filter @user-tracker/core build && pnpm --filter @user-tracker/docs build",
+    "build": "pnpm --filter @magape-track/core build && pnpm --filter @magape-track/docs build",
     "test": "pnpm -r test",
     "clean": "pnpm -r clean"
   },

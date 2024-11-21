@@ -1,5 +1,5 @@
 {
-  "name": "@user-tracker/docs",
+  "name": "@magape-track/docs",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "clean": "pnpm rimraf .next"
   },
   "dependencies": {
-    "@user-tracker/core": "workspace:*",
+    "@magape-track/core": "workspace:*",
     "next": "^13.5.7",
     "nextra": "^3.0.0",
     "nextra-theme-docs": "^3.0.0",

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import UserActivityMonitor from "@user-tracker/core";
+import UserActivityMonitor from "@magape-track/core";
 import styles from "./styles.module.css";
+
+const API_ENDPOINT = "https://d1-db.andy00614a.workers.dev/api/activities";
 
 const ActivityMonitor = () => {
   const [monitorData, setMonitorData] = useState({
@@ -35,7 +37,7 @@ const ActivityMonitor = () => {
       monitorRef.current = new UserActivityMonitor({
         noActivityThreshold: Number(noActivityThreshold) * 1000 || 10000,
         sendInterval: 10000,
-        endpoint: "http://localhost:8787/api/activities",
+        endpoint: API_ENDPOINT,
         gameId: "game_001",
         gameName: "Super Mario",
       });
