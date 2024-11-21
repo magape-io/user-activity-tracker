@@ -32,13 +32,13 @@ https://cdn.jsdelivr.net/npm/@magape-track/core@0.1.0/dist/index.min.js
 <!-- Initialize configuration -->
 <script>
     const activityMonitor = new UserActivityMonitor({
-        // 10秒无操作视为不活跃
+        // if 10 seconds no activity, consider inactive
         noActivityThreshold: 10000,
         
-        // 每分钟同步一次数据
+        // sync data every minute
         sendInterval: 60000,
-        
-        // 数据上报端点
+
+        // data reporting endpoint (if not provided, it will use the default endpoint to magape)
         endpoint: '/api/activity-log',
     });
 </script>
@@ -46,9 +46,12 @@ https://cdn.jsdelivr.net/npm/@magape-track/core@0.1.0/dist/index.min.js
 
 ## Configuration Options
 
-| Parameter | Description | Default Value |
-|-----------|-------------|---------------|
-| noActivityThreshold | Time threshold for no activity detection | 10000ms |
-| sendInterval | Data reporting interval | 30000ms |
-| endpoint | Data reporting API endpoint | '/api/activity-log' |
-| storageKey | Local storage key | 'user_activity_data' |
+| Parameter | Required | Description | Default Value |
+|-----------|----------|-------------|---------------|
+| gameName | Yes | 游戏名称 | null |
+| noActivityThreshold | No | 无活动检测阈值 | 10000ms |
+| sendInterval | No | 数据上报间隔 | 30000ms |
+| endpoint | No | 数据上报API端点 | '/api/activity-log' |
+| storageKey | No | 本地存储键名 | 'user_activity_data' |
+| gameId | No | 游戏ID | null |
+| ipEndpoint | No | IP获取接口地址 | 'https://api.ipify.org?format=json' |
