@@ -2,12 +2,11 @@ export class UserActivityMonitor {
     constructor(options = {}) {
         // 配置项
         this.options = {
-            inactiveThreshold: options.inactiveThreshold || 60000, // 默认60秒无操作视为不活跃
+            noActivityThreshold: options.noActivityThreshold || 10000, // 默认10秒无操作视为不活跃
             storageKey: options.storageKey || 'user_activity_data',
             sendInterval: options.sendInterval || 30000, // 数据发送间隔，默认30秒
             endpoint: options.endpoint || '/api/activity-log',
             ipEndpoint: options.ipEndpoint || 'https://api.ipify.org?format=json', // IP获取接口
-            noActivityThreshold: options.noActivityThreshold || 10000, // 默认10秒无操作视为不活跃
             gameId: options.gameId || null,        // 新增：游戏ID
             gameName: options.gameName || null,    // 新增：游戏名称
         };
@@ -204,7 +203,7 @@ export class UserActivityMonitor {
             document.addEventListener(event, throttledHandler, { passive: true });
         });
 
-        // 页面可见性变化监听
+        // 页面可见性变化监��
         document.addEventListener('visibilitychange', this._handleVisibilityChange.bind(this));
         window.addEventListener('focus', this._handleWindowFocus.bind(this));
         window.addEventListener('blur', this._handleWindowBlur.bind(this));
@@ -254,10 +253,16 @@ export class UserActivityMonitor {
             const timeSinceLastInteraction = now - this.lastInteractionTime;
             
             if (timeSinceLastInteraction > this.options.noActivityThreshold) {
-                this.hasRecentInteraction = false;
-                this._setPauseReason('No user activity detected');
+                if (this.hasRecentInteraction) {
+                    this._updateActiveTime();
+                    this.hasRecentInteraction = false;
+                    this._setPauseReason('No user activity detected');
+                }
             } else {
-                this._setPauseReason(null);
+                if (!this.hasRecentInteraction) {
+                    this.hasRecentInteraction = true;
+                    this._setPauseReason(null);
+                }
             }
             
             this._updateActiveTime();
@@ -266,9 +271,9 @@ export class UserActivityMonitor {
 
     _updateActiveTime() {
         const now = Date.now();
-        // 只有在窗口聚焦且有最近交互时才累加时间
         if (this.isWindowFocused && this.hasRecentInteraction) {
-            this.activeTime += now - this.lastActivityTime;
+            const timeIncrement = Math.min(now - this.lastActivityTime, 1000);
+            this.activeTime += timeIncrement;
         }
         this.lastActivityTime = now;
     }
@@ -412,7 +417,7 @@ export class UserActivityMonitor {
 // 使用示例：
 /*
 const activityMonitor = new UserActivityMonitor({
-    inactiveThreshold: 300000, // 5分钟无操作视为不活跃
+    noActivityThreshold: 300000, // 5分钟无操作视为不活跃
     sendInterval: 60000, // 每分钟同步一次数据
     endpoint: 'https://your-api-endpoint/activity-log',
     ipEndpoint: 'https://api.ipify.org?format=json' // 可选，自定义IP获取接口

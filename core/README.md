@@ -39,9 +39,8 @@ bun run dev
 <script src="/index.js"></script>
 <script>
     const activityMonitor = new UserActivityMonitor({
-        inactiveThreshold: 30000,    // 30 seconds for inactivity
-        noActivityThreshold: 10000,  // 10 seconds for no mouse/keyboard activity
-        sendInterval: 60000,         // Sync data every minute
+        noActivityThreshold: 10000,    // 10 seconds for no mouse/keyboard activity
+        sendInterval: 30000,         // Sync data every minute
         endpoint: '/api/activity-log',
     });
 </script>
@@ -51,7 +50,6 @@ bun run dev
 
 | Parameter | Description | Default Value |
 |-----------|-------------|---------------|
-| inactiveThreshold | Time threshold for user inactivity | 60000ms |
 | noActivityThreshold | Time threshold for no activity detection | 10000ms |
 | sendInterval | Data reporting interval | 30000ms |
 | endpoint | Data reporting API endpoint | '/api/activity-log' |

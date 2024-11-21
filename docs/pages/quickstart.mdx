@@ -21,16 +21,13 @@ Add the following code to your HTML file:
 <!-- Initialize configuration -->
 <script>
     const activityMonitor = new UserActivityMonitor({
-        // Mark user as inactive after 30 seconds of no interaction
-        inactiveThreshold: 30000,    
+        // 10秒无操作视为不活跃
+        noActivityThreshold: 10000,
         
-        // Trigger after 10 seconds of no mouse/keyboard activity
-        noActivityThreshold: 10000,  
+        // 每分钟同步一次数据
+        sendInterval: 60000,
         
-        // Sync data every minute
-        sendInterval: 60000,         
-        
-        // Data reporting endpoint
+        // 数据上报端点
         endpoint: '/api/activity-log',
     });
 </script>
@@ -40,7 +37,6 @@ Add the following code to your HTML file:
 
 | Parameter | Description | Default Value |
 |-----------|-------------|---------------|
-| inactiveThreshold | Time threshold for user inactivity | 60000ms |
 | noActivityThreshold | Time threshold for no activity detection | 10000ms |
 | sendInterval | Data reporting interval | 30000ms |
 | endpoint | Data reporting API endpoint | '/api/activity-log' |
