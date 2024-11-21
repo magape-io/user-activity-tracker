@@ -1,19 +1,19 @@
-### 项目结构
+### Project Structure
 
 ```
 user-activity-tracker
 ├── packages
-│   ├── core
-│   ├── docs
-│   ├── ...
+│   ├── core (sdk code)
+│   ├── docs (demo and documentation)
+│   ├── d1-db (sqlite database)
 ```
 
-### 项目依赖
+### Project Dependencies
 
 - [pnpm](https://pnpm.io/)
 - [nextra](https://nextra.site/)
 
-### 开发
+### Development
 
 ```bash
 pnpm install
