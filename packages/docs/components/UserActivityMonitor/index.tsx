@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { UserActivityMonitor } from "./UserActivityMonitor";
+import UserActivityMonitor from "@user-tracker/core";
 import styles from "./styles.module.css";
 
 const ActivityMonitor = () => {
@@ -10,17 +10,20 @@ const ActivityMonitor = () => {
     userInfo: null,
   });
 
-  const [noActivityThreshold, setNoActivityThreshold] = useState('5');
+  const [noActivityThreshold, setNoActivityThreshold] = useState("5");
   const monitorRef = useRef(null);
 
   // Helper function to cleanup monitor
   const cleanupMonitor = () => {
-    if (monitorRef.current?.destroy && typeof monitorRef.current.destroy === 'function') {
+    if (
+      monitorRef.current?.destrody &&
+      typeof monitorRef.current.destroy === "function"
+    ) {
       try {
         monitorRef.current.destroy();
         monitorRef.current = null;
       } catch (error) {
-        console.error('Error cleaning up monitor:', error);
+        console.error("Error cleaning up monitor:", error);
       }
     }
   };
@@ -54,7 +57,7 @@ const ActivityMonitor = () => {
         cleanupMonitor();
       };
     } catch (error) {
-      console.error('Error initializing monitor:', error);
+      console.error("Error initializing monitor:", error);
     }
   }, [noActivityThreshold]);
 

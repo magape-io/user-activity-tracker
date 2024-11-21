@@ -1,0 +1,14 @@
+{
+  "name": "user-activity-tracker",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel run dev",
+    "build": "pnpm --filter @user-tracker/core build && pnpm --filter @user-tracker/docs build",
+    "test": "pnpm -r test",
+    "clean": "pnpm -r clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "rimraf": "^5.0.5"
+  }
+}
