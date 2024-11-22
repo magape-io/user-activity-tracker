@@ -17,7 +17,7 @@ export class UserActivityMonitor {
         this.hasRecentInteraction = true;        // 是否有最近的交互
         this.lastActivityTime = Date.now();      // 上次活动时间
         this.lastInteractionTime = Date.now();   // 上次交互时间
-        this.activeTime = 0;                     // 活跃��间累计
+        this.activeTime = 0;                     // 活跃间累计
         this.sessionStartTime = Date.now();
         this.loginTime = new Date().toISOString();
         this.sessionId = this._generateUUID();
@@ -203,7 +203,7 @@ export class UserActivityMonitor {
             document.addEventListener(event, throttledHandler, { passive: true });
         });
 
-        // 页���可见性变化监
+        // 页可见性变化监
         document.addEventListener('visibilitychange', this._handleVisibilityChange.bind(this));
         window.addEventListener('focus', this._handleWindowFocus.bind(this));
         window.addEventListener('blur', this._handleWindowBlur.bind(this));
@@ -288,8 +288,11 @@ export class UserActivityMonitor {
     _updateActiveTime() {
         const now = Date.now();
         if (this.isWindowFocused && this.hasRecentInteraction) {
-            const timeIncrement = Math.min(now - this.lastActivityTime, 1000);
-            this.activeTime += timeIncrement;
+            const timeSinceLastActivity = now - this.lastActivityTime;
+            if (timeSinceLastActivity <= this.options.noActivityThreshold) {
+                const timeIncrement = Math.min(timeSinceLastActivity, 1000);
+                this.activeTime += timeIncrement;
+            }
         }
         this.lastActivityTime = now;
     }
