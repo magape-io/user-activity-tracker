@@ -17,7 +17,7 @@ export class UserActivityMonitor {
         this.hasRecentInteraction = true;        // 是否有最近的交互
         this.lastActivityTime = Date.now();      // 上次活动时间
         this.lastInteractionTime = Date.now();   // 上次交互时间
-        this.activeTime = 0;                     // 活跃时间累计
+        this.activeTime = 0;                     // 活跃��间累计
         this.sessionStartTime = Date.now();
         this.loginTime = new Date().toISOString();
         this.sessionId = this._generateUUID();
@@ -203,7 +203,7 @@ export class UserActivityMonitor {
             document.addEventListener(event, throttledHandler, { passive: true });
         });
 
-        // 页面可见性变化监��
+        // 页���可见性变化监
         document.addEventListener('visibilitychange', this._handleVisibilityChange.bind(this));
         window.addEventListener('focus', this._handleWindowFocus.bind(this));
         window.addEventListener('blur', this._handleWindowBlur.bind(this));
@@ -230,38 +230,54 @@ export class UserActivityMonitor {
     }
 
     _handleVisibilityChange() {
+        const previousState = this.isWindowFocused;
         this.isWindowFocused = !document.hidden;
         if (document.hidden) {
             this._setPauseReason('Page is hidden');
         } else {
             this._setPauseReason(null);
         }
+        if (previousState !== this.isWindowFocused) {
+            this._saveData();
+        }
     }
 
     _handleWindowFocus() {
+        const previousState = this.isWindowFocused;
         this.isWindowFocused = true;
+        if (previousState !== this.isWindowFocused) {
+            this._setPauseReason(null);
+            this._saveData();
+        }
     }
 
     _handleWindowBlur() {
+        const previousState = this.isWindowFocused;
         this.isWindowFocused = false;
-        this._setPauseReason('Window lost focus');
+        if (previousState !== this.isWindowFocused) {
+            this._setPauseReason('Window lost focus');
+            this._saveData();
+        }
     }
 
     _startActivityCheck() {
         this.activityCheckInterval = setInterval(() => {
             const now = Date.now();
             const timeSinceLastInteraction = now - this.lastInteractionTime;
+            const previousInteractionState = this.hasRecentInteraction;
             
             if (timeSinceLastInteraction > this.options.noActivityThreshold) {
                 if (this.hasRecentInteraction) {
                     this._updateActiveTime();
                     this.hasRecentInteraction = false;
                     this._setPauseReason('No user activity detected');
+                    this._saveData();
                 }
             } else {
                 if (!this.hasRecentInteraction) {
                     this.hasRecentInteraction = true;
                     this._setPauseReason(null);
+                    this._saveData();
                 }
             }
             
@@ -377,7 +393,7 @@ export class UserActivityMonitor {
         };
     }
 
-    // 修改获取用户信息的方法
+    // 修改获用户信息的方法
     getUserInfo() {
         const status = this._getActivityStatus();
         return {

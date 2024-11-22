@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import UserActivityMonitor from "@magape-track/core";
+import {UserActivityMonitor} from "@magape-track/core/dist/index.esm";
 import styles from "./styles.module.css";
 
 const API_ENDPOINT = "https://d1-db.andy00614a.workers.dev/api/activities";
