@@ -5,7 +5,7 @@ user-activity-tracker
 ├── packages
 │   ├── core (sdk code)
 │   ├── docs (demo and documentation)
-│   ├── d1-db (sqlite database)
+│   ├── d1-db (sqlite database with cloudflare workers)
 ```
 
 ### Project Dependencies
