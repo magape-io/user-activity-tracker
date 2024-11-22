@@ -1,6 +1,6 @@
 {
   "name": "@magape-track/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A lightweight user activity tracking tool for monitoring real-time user activity status",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
