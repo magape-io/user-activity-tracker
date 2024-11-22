@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+// @ts-ignore
 import {UserActivityMonitor} from "@magape-track/core/dist/index.esm";
 import styles from "./styles.module.css";
 
